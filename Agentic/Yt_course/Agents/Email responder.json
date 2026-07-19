@@ -1,0 +1,305 @@
+{
+  "name": "Stock Agent",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "hours"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        0,
+        0
+      ],
+      "id": "4fd41ff8-3826-416d-94e9-e7038b535f77",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "limit": 5,
+        "filters": {
+          "labelIds": [
+            "UNREAD"
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        208,
+        0
+      ],
+      "id": "f939affd-a3df-484d-92d6-aab6138a5090",
+      "name": "Gmail all mails",
+      "webhookId": "b1767283-ff0f-46bd-80e6-0a478f096695",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "YwATgQC8543kdwky",
+          "name": "Gmail OAuth2 API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "messageId": "={{ $json.id }}",
+        "simple": false,
+        "options": {
+          "downloadAttachments": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        416,
+        0
+      ],
+      "id": "82dec16e-0cc1-4707-abe8-82f5f1a6b93e",
+      "name": "Gmail all details",
+      "webhookId": "4bb0efcc-f617-4850-b099-5d111346ec21",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "YwATgQC8543kdwky",
+          "name": "Gmail OAuth2 API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=I want you to reply on this email :  {{ $json.text}}\ni want u to draft the reply and give me only body text\n\n\n\n",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        624,
+        0
+      ],
+      "id": "2cb335cd-b9d2-4bfd-ad58-5eb016f7fab6",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "operation": "create",
+        "base": {
+          "__rl": true,
+          "value": "appsPGvDYN2ZubmP8",
+          "mode": "list",
+          "cachedResultName": "Agentic n8n Manager",
+          "cachedResultUrl": "https://airtable.com/appsPGvDYN2ZubmP8"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tblEa4SPVOqEUN35g",
+          "mode": "list",
+          "cachedResultName": "Email response",
+          "cachedResultUrl": "https://airtable.com/appsPGvDYN2ZubmP8/tblEa4SPVOqEUN35g"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Email body": "={{ $('Gmail all details').item.json.text }}",
+            "Name": "={{ $('Gmail all details').item.json.from.value[0].name }}",
+            "Email": "={{ $('Gmail all details').item.json.from.value[0].address }}",
+            "Draft": "={{ $json.output }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Name",
+              "displayName": "Name",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Email",
+              "displayName": "Email",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Email body",
+              "displayName": "Email body",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Draft",
+              "displayName": "Draft",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.2,
+      "position": [
+        976,
+        0
+      ],
+      "id": "ff05e6e2-b9bb-4882-a38c-f088c2ed3f02",
+      "name": "Create a record",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "InWE1uipzqYf8x2K",
+          "name": "Airtable Personal Access Token account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatCohere",
+      "typeVersion": 1,
+      "position": [
+        576,
+        192
+      ],
+      "id": "8e5c5c42-4d30-442b-9f37-645071ea1c73",
+      "name": "Cohere Chat Model",
+      "credentials": {
+        "cohereApi": {
+          "id": "4JX3le65bkxaZTPI",
+          "name": "Cohere account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "markAsRead",
+        "messageId": "={{ $('Gmail all details').item.json.threadId }}"
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        1184,
+        0
+      ],
+      "id": "8ba448c8-2dcd-4d73-bd6a-ebdeab3d4fd5",
+      "name": "Mark a message as read",
+      "webhookId": "174dedf2-64d9-4cdb-8da7-fe4b15db5360",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "YwATgQC8543kdwky",
+          "name": "Gmail OAuth2 API"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Gmail all mails",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gmail all mails": {
+      "main": [
+        [
+          {
+            "node": "Gmail all details",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gmail all details": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Create a record",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Cohere Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create a record": {
+      "main": [
+        [
+          {
+            "node": "Mark a message as read",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "147989a0-57aa-4402-831c-38f9a6adf524",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "ae642274ae6c1c4f1930fee18a0d19c2e7aeafc31cbf00b50b3ccfa97071a60a"
+  },
+  "nodeGroups": [],
+  "id": "tUzxhRVdZoKd8gtb",
+  "tags": []
+}

@@ -1,0 +1,134 @@
+{
+  "name": "My workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "path": "ac79a04e-4c11-4b35-8587-c214ef68086e"
+      },
+      "type": "@n8n/n8n-nodes-langchain.mcpTrigger",
+      "typeVersion": 2,
+      "position": [
+        0,
+        0
+      ],
+      "id": "ffbcbbb5-1804-468b-91ea-06cf6038bc6d",
+      "name": "MCP Server Trigger",
+      "webhookId": "ac79a04e-4c11-4b35-8587-c214ef68086e"
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "limit": 15,
+        "filters": {}
+      },
+      "type": "n8n-nodes-base.gmailTool",
+      "typeVersion": 2.2,
+      "position": [
+        96,
+        208
+      ],
+      "id": "12148f7a-4cd1-412a-9ab3-7c53211bc671",
+      "name": "Get many messages in Gmail",
+      "webhookId": "d0012f4d-6c63-47cb-a548-8c6743b10854",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "JquK3G748LOlXyir",
+          "name": "Gmail OAuth2 API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "filters": {},
+        "options": {}
+      },
+      "type": "n8n-nodes-base.youTubeTool",
+      "typeVersion": 1,
+      "position": [
+        336,
+        224
+      ],
+      "id": "0d4b1b45-f5a4-434a-9a2a-55c79362d25b",
+      "name": "Get many channels in YouTube",
+      "credentials": {
+        "youTubeOAuth2Api": {
+          "id": "yLGPdzU9CXPrN0rF",
+          "name": "YouTube account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('To', ``, 'string') }}",
+        "subject": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Subject', ``, 'string') }}",
+        "message": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Message', ``, 'string') }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmailTool",
+      "typeVersion": 2.2,
+      "position": [
+        192,
+        304
+      ],
+      "id": "7abeef58-6188-4ea2-9ecf-8b50923f9d22",
+      "name": "Send a message in Gmail",
+      "webhookId": "52d38609-0421-40e3-8dd4-4976417c1349",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "JquK3G748LOlXyir",
+          "name": "Gmail OAuth2 API"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Get many messages in Gmail": {
+      "ai_tool": [
+        [
+          {
+            "node": "MCP Server Trigger",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get many channels in YouTube": {
+      "ai_tool": [
+        [
+          {
+            "node": "MCP Server Trigger",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a message in Gmail": {
+      "ai_tool": [
+        [
+          {
+            "node": "MCP Server Trigger",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": true
+  },
+  "versionId": "cdc88179-c812-4198-9e46-267fdc934ec7",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "4ef0f8feee7d7adc1523204e2fccedc24ce61428dd18bb500c3fc9450cc37887"
+  },
+  "nodeGroups": [],
+  "id": "hkFhrcgTHdVIJF0l",
+  "tags": []
+}

@@ -1,0 +1,184 @@
+{
+  "name": "RAG DATA",
+  "nodes": [
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        -416,
+        752
+      ],
+      "id": "d0725903-b612-4833-a6c4-f8bab16007ce",
+      "name": "When chat message received",
+      "webhookId": "da0f4d3a-cd33-4093-a3a8-7ca6a925ad38"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.chatInput }}",
+        "options": {
+          "systemMessage": "You are a personal assistant for Abdullah Alam Ansari. You ONLY answer questions using the Pinecone Vector Store tool. You MUST call the tool for every single question — no exceptions.\n\nRULES:\n- ALWAYS call the Pinecone tool before answering. Never skip it.\n- NEVER answer from your own knowledge or training data.\n- NEVER guess, assume, or hallucinate any information.\n- If the tool returns no results, say: 'I could not find that information in Abdullah's knowledge base.'\n- Do NOT mention any university, company, or fact that did not come from the tool.\n- Keep answers concise and factual."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        -208,
+        752
+      ],
+      "id": "7509f30b-27cf-4bce-aea0-7a6de2641c40",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatCohere",
+      "typeVersion": 1,
+      "position": [
+        -336,
+        960
+      ],
+      "id": "3b81c3e3-6f85-49a2-8d64-358b59cf4a75",
+      "name": "Cohere Chat Model",
+      "credentials": {
+        "cohereApi": {
+          "id": "KZ2UpvWhRPSZVQzL",
+          "name": "Cohere account 2"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.4,
+      "position": [
+        -192,
+        960
+      ],
+      "id": "6b6d8b93-2fba-4ca2-a8d2-11c11cd831af",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "mode": "retrieve-as-tool",
+        "toolDescription": "ALWAYS use this tool to retrieve any information about Abdullah Alam Ansari — his education, skills, projects, work experience, hackathons, awards, and personal background. This is the ONLY source of truth. Use it for every question.",
+        "pineconeIndex": {
+          "__rl": true,
+          "value": "n8nagent",
+          "mode": "list",
+          "cachedResultName": "n8nagent"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.vectorStorePinecone",
+      "typeVersion": 1.3,
+      "position": [
+        0,
+        960
+      ],
+      "id": "3ec3da38-4c37-401b-be3e-4d64fc08d5a4",
+      "name": "Pinecone Vector Store",
+      "credentials": {
+        "pineconeApi": {
+          "id": "QTf8OJUaL5mHv5qd",
+          "name": "Pinecone account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "modelName": "embed-english-v3.0"
+      },
+      "type": "@n8n/n8n-nodes-langchain.embeddingsCohere",
+      "typeVersion": 1,
+      "position": [
+        32,
+        1152
+      ],
+      "id": "6049e865-5587-4085-afdb-108c38df7a47",
+      "name": "Embeddings Cohere",
+      "credentials": {
+        "cohereApi": {
+          "id": "eCuBmwM3QYvpUcjG",
+          "name": "Cohere account 2"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Cohere Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Pinecone Vector Store": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings Cohere": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Pinecone Vector Store",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "54161b23-1cd8-4eb5-9c96-8746216d4ecf",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "ae642274ae6c1c4f1930fee18a0d19c2e7aeafc31cbf00b50b3ccfa97071a60a"
+  },
+  "nodeGroups": [],
+  "id": "lpRPTvADPl0pOLKm",
+  "tags": []
+}

@@ -1,0 +1,289 @@
+{
+  "name": "Json workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        0,
+        0
+      ],
+      "id": "7ae61954-d2f9-40ac-97ec-16cbfb5edef5",
+      "name": "When chat message received",
+      "webhookId": "5b81c368-e3fb-4122-b57b-cb1f228ef6bc"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Make recipie of the dish:  {{ $json.chatInput }}",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "=<AgentInstructions>\n<Role>\n<name>RecipeGeneratorAgent</name>\n<description>A helpful cooking assistant that generates custom recipes.</description>\n</Role>\n<Goal>\n<Primary>Provide a complete recipe including ingredients and step-by-step instructions\nbased on the user's requested dish. </Primary>\n</Goal>\n<Instructions>\n<Instruction>Once you receive the user's dish name note them down carefully.\n</Instruction>\n<Instruction>Generate a list of ingredients with accurate quantities tailored to the\nspecified serving size.</Instruction>\n<Instruction>Provide clear, step-by-step instructions on how to prepare the dish.\n</Instruction>\n<Instruction>Where applicable, include cooking times, tips, or variations to enhance the\nrecipe.</Instruction>\n</Instructions>\n</AgentInstructions>\n\n\n\n<Examples>\n    <Example>\n        <Userinput>Poha with Stuffed Potato</Userinput>\n    \n        <Useroutput>\n    {\n  \"recipe_name\": \"Egg Omelette with Mustard Sauce\",\n\n  \"ingredients\": \"4 large eggs, 2 tbsp milk (or water), salt to taste, freshly ground black pepper to taste, 1 tbsp butter or oil, optional fillings: chopped ham, cheese, spinach, mushrooms, chives, parsley, 1/4 cup mayonnaise, 1 tbsp Dijon mustard, 1 tsp whole grain mustard (optional), 1 tsp lemon juice, 1 tsp honey or sugar (optional), pinch of salt, pinch of black pepper, 1 tbsp chopped fresh herbs such as chives or dill (optional).\",\n\n  \"instructions\": \"In a small bowl, whisk together mayonnaise, Dijon mustard, whole grain mustard, lemon juice, honey, salt, and pepper until smooth. Stir in chopped herbs if desired and set aside. Crack the eggs into a bowl, add milk, salt, and pepper, and whisk until frothy. Heat a non-stick skillet over medium heat and add butter or oil. Pour in the egg mixture and cook for 20–30 seconds. Gently lift the edges with a spatula and tilt the pan to allow uncooked egg to flow underneath. When the eggs are mostly set but slightly runny on top, add any desired fillings to one half of the omelette. Fold the omelette in half and cook for another 30–60 seconds until fully set. Transfer to a plate, drizzle with the mustard sauce, and garnish with additional herbs if desired.\",\n\n  \"tips\": \"For a lighter sauce, replace half of the mayonnaise with Greek yogurt. Add a splash of hot sauce to the mustard sauce for extra heat. Serve with toast, salad, or roasted vegetables for a complete meal. Avoid overcooking the omelette to keep it soft and fluffy.\"\n}\n        </Useroutput>\n    </Example>\n</Examples>"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        256,
+        0
+      ],
+      "id": "595e5117-4361-4d1a-b006-f48a8354cb3d",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "operation": "create",
+        "base": {
+          "__rl": true,
+          "value": "appsPGvDYN2ZubmP8",
+          "mode": "list",
+          "cachedResultName": "Recipie",
+          "cachedResultUrl": "https://airtable.com/appsPGvDYN2ZubmP8"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tblEa4SPVOqEUN35g",
+          "mode": "list",
+          "cachedResultName": "Recipie table",
+          "cachedResultUrl": "https://airtable.com/appsPGvDYN2ZubmP8/tblEa4SPVOqEUN35g"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Recepie Name": "={{ $json.output.recipe_name }}",
+            "Ingredients": "={{ $json.output.ingredients }}",
+            "Instructions": "={{ $json.output.instructions }}",
+            "Tips": "={{ $json.output.tips }}"
+          },
+          "matchingColumns": [
+            "Recipie detail"
+          ],
+          "schema": [
+            {
+              "id": "Recepie Name",
+              "displayName": "Recepie Name",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Description",
+              "displayName": "Description",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Ingredients",
+              "displayName": "Ingredients",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Tips",
+              "displayName": "Tips",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Instructions",
+              "displayName": "Instructions",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.2,
+      "position": [
+        720,
+        0
+      ],
+      "id": "53af0018-fccb-4ce3-9fb8-e7147ae11078",
+      "name": "Create a record",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "InWE1uipzqYf8x2K",
+          "name": "Airtable Personal Access Token account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatCohere",
+      "typeVersion": 1,
+      "position": [
+        224,
+        224
+      ],
+      "id": "e5f5cc76-d885-41d1-9c0c-18efba82eef2",
+      "name": "Cohere Chat Model",
+      "credentials": {
+        "cohereApi": {
+          "id": "4JX3le65bkxaZTPI",
+          "name": "Cohere account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserAutofixing",
+      "typeVersion": 1,
+      "position": [
+        352,
+        224
+      ],
+      "id": "f0aac919-26a1-4b24-87bb-a6bcac3c5199",
+      "name": "Auto-fixing Output Parser"
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n  \"recipe_name\": \"Egg Omelette with Mustard Sauce\",\n\n  \"ingredients\": \"4 large eggs, 2 tbsp milk (or water), salt to taste, freshly ground black pepper to taste, 1 tbsp butter or oil, optional fillings: chopped ham, cheese, spinach, mushrooms, chives, parsley, 1/4 cup mayonnaise, 1 tbsp Dijon mustard, 1 tsp whole grain mustard (optional), 1 tsp lemon juice, 1 tsp honey or sugar (optional), pinch of salt, pinch of black pepper, 1 tbsp chopped fresh herbs such as chives or dill (optional).\",\n\n  \"instructions\": \"In a small bowl, whisk together mayonnaise, Dijon mustard, whole grain mustard, lemon juice, honey, salt, and pepper until smooth. Stir in chopped herbs if desired and set aside. Crack the eggs into a bowl, add milk, salt, and pepper, and whisk until frothy. Heat a non-stick skillet over medium heat and add butter or oil. Pour in the egg mixture and cook for 20–30 seconds. Gently lift the edges with a spatula and tilt the pan to allow uncooked egg to flow underneath. When the eggs are mostly set but slightly runny on top, add any desired fillings to one half of the omelette. Fold the omelette in half and cook for another 30–60 seconds until fully set. Transfer to a plate, drizzle with the mustard sauce, and garnish with additional herbs if desired.\",\n\n  \"tips\": \"For a lighter sauce, replace half of the mayonnaise with Greek yogurt. Add a splash of hot sauce to the mustard sauce for extra heat. Serve with toast, salad, or roasted vegetables for a complete meal. Avoid overcooking the omelette to keep it soft and fluffy.\"\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        496,
+        432
+      ],
+      "id": "d6188d93-81c5-4774-ac73-6cf2ff02d503",
+      "name": "Structured Output Parser1"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatCohere",
+      "typeVersion": 1,
+      "position": [
+        368,
+        432
+      ],
+      "id": "daac02be-bf5c-4337-bb6b-a3bc9a393676",
+      "name": "Cohere Chat Model1",
+      "credentials": {
+        "cohereApi": {
+          "id": "4JX3le65bkxaZTPI",
+          "name": "Cohere account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Create a record",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Cohere Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser1": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "Auto-fixing Output Parser",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Auto-fixing Output Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Cohere Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Auto-fixing Output Parser",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "643060a4-df2a-4155-97c1-a68525f75b1d",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "ae642274ae6c1c4f1930fee18a0d19c2e7aeafc31cbf00b50b3ccfa97071a60a"
+  },
+  "nodeGroups": [],
+  "id": "ODljQtFcI8oV8v4r",
+  "tags": []
+}
