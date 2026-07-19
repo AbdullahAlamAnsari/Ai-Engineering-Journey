@@ -1,2 +1,1 @@
-# Ai-Engineering-Journey
-This repo covers all of the grinding that I have gone through to be able to work with large datasets - training models on those datasets and working on LLMs and Agentic Ai as well
+Worked with the dataset of uber rides - cleaned it then analyzed it using various graphs and finally gave some findings in the form of comments 
