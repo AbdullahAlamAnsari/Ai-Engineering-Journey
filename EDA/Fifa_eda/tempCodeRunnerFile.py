@@ -1,0 +1,1 @@
+e"].str.replace(['N/A', '?', '-',"Unknown"],np.nan)
