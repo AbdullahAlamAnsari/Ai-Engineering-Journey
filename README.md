@@ -1,10 +1,4 @@
-# 🤖 AI Engineering Bootcamp — Atomcamp
-
-<p align="center">
-  <img src="https://img.shields.io/badge/Duration-3%20Months-blueviolet?style=for-the-badge" />
-  <img src="https://img.shields.io/badge/Modules-13-orange?style=for-the-badge" />
-  <img src="https://img.shields.io/badge/Status-In%20Progress-yellow?style=for-the-badge" />
-</p>
+# 🤖 AI Engineering Journey
 
 <p align="center">
   <img src="https://img.shields.io/badge/Python-3776AB?style=flat-square&logo=python&logoColor=white" />
@@ -19,7 +13,7 @@
   <img src="https://img.shields.io/badge/Google%20Cloud-4285F4?style=flat-square&logo=googlecloud&logoColor=white" />
 </p>
 
-This repo documents my journey through Atomcamp's **3-month AI Engineering Bootcamp** — covering everything from Python fundamentals to building, containerizing, and deploying full AI agent systems. Every module below gets its own folder with notes, exercises, and hands-on projects as I complete them.
+This repo documents my journey into AI Engineering — from Python fundamentals and the math behind machine learning, all the way to building, containerizing, and deploying full AI agent systems. Every module below gets its own folder with notes, exercises, and hands-on projects as I work through them.
 
 ---
 
@@ -138,7 +132,7 @@ This repo documents my journey through Atomcamp's **3-month AI Engineering Bootc
 </details>
 
 <details>
-<summary><b>11. Professional Development Series</b></summary>
+<summary><b>11. Professional Development</b></summary>
 
 - Professional email writing and etiquette
 - Data science report writing and presentations
@@ -178,22 +172,6 @@ Each folder contains notes, hands-on exercises, and any datasets/projects built 
 ## 🛠️ Tools & Technologies Covered
 
 `Python` · `NumPy` · `Pandas` · `Matplotlib` · `Seaborn` · `SciPy` · `Scikit-learn` · `TensorFlow` · `PyTorch` · `OpenCV` · `YOLO` · `LangChain` · `CrewAI` · `n8n` · `Power Automate` · `Azure AI Foundry` · `Microsoft Copilot Studio` · `Databricks` · `Apache Spark` · `MLflow` · `Docker` · `Git` · `Weights & Biases` · `GitHub Actions` · `FastAPI` · `Google Cloud Platform`
-
----
-
-## 📈 Progress
-
-- [ ] Python for AI
-- [ ] Mathematics
-- [ ] Exploratory Data Analysis
-- [ ] Machine Learning and Deep Learning
-- [ ] Multimodal Generative AI — Agents
-- [ ] No-Code AI Agents
-- [ ] Data Warehousing and ETL
-- [ ] Computer Vision
-- [ ] Natural Language Processing
-- [ ] Building and Deploying AI Systems
-- [ ] Professional Development Series
 
 ---
 
